@@ -364,17 +364,16 @@ svc_rk05(RK05 *drive, RK11 *rk, int selected)
 			// some fake value, should be around 640us
 			drive->cyl_timer = 500;	
 		}
-
-		// search complete
-		if(drive->cyl == drive->newcyl &&
-		   drive->func == FR_SEEK){
-			rk->rkds = (drive-rk->drives)<<13;
-			rk->rkcs |= SCP;
-			drive->func = 0;
-			rk->done = 1;
-		}
 	}else if(drive->func == 0)
 		drive->rkds |= ARDY;
+	// search complete
+	if(drive->cyl == drive->newcyl &&
+	   drive->func == FR_SEEK){
+		rk->rkds = (drive-rk->drives)<<13;
+		rk->rkcs |= SCP;
+		drive->func = 0;
+		rk->done = 1;
+	}
 
 	drive->surf = (rk->rkda>>4)&1;
 
